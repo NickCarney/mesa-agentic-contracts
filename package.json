@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@pinecone-database/pinecone": "^4.1.0",
     "axios": "^1.7.9",
     "pdf-parse": "^1.1.1"
   }
