@@ -2,6 +2,7 @@
   "name": "rag-tag-contracts",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -16,7 +17,9 @@
     "@pinecone-database/pinecone": "^4.1.0",
     "axios": "^1.7.9",
     "next": "15.1.6",
+    "openai": "^4.82.0",
     "pdf-parse": "^1.1.1",
+    "pinecone-client": "^2.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
