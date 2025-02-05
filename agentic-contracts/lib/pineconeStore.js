@@ -21,7 +21,7 @@ export async function main() {
       }
     });
   } catch (e) {
-    console.log("Index might already exist");
+    console.log("Index might already exist",e);
   }
 
   const index = client.index(indexName);
@@ -42,7 +42,7 @@ export async function main() {
 
   const vectorId = createHash("md5").update(pdfPath).digest("hex");
 
-  const records = text.map((d, i) => ({
+  const records = text.map((d) => ({
     id: vectorId,
     values: embeddings,
     metadata: { text: d.text }

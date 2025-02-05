@@ -1,4 +1,4 @@
-const { createClient } = require("@supabase/supabase-js");
+import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
     process.env.SUPABASE_URL,
@@ -21,6 +21,7 @@ export async function handleSupabaseSubscription() {
           console.log("New row added:", payload);
           const ipfs_url =
             "https://mesa.mypinata.cloud/ipfs/" + payload.new.ipfs_cid;
+            console.log("IPFS URL:", ipfs_url);
         }
       )
       .subscribe((status) => {
