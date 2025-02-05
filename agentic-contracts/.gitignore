@@ -40,6 +40,23 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+
+# RAG specific
+*.db
+*.sqlite
+*.faiss
+*.index
+vector_store/
+embeddings/
+
+# OS specific
 .DS_Store
 node_modules
 .next

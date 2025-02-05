@@ -1,3 +1,4 @@
+from flask import Flask, request, jsonify
 from google.cloud import aiplatform
 from langchain.document_loaders import GCSFileLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -10,24 +11,27 @@ from langchain.prompts import PromptTemplate
 # Initialize Google Cloud
 aiplatform.init(project='eth-global', location='us-central1')
 
-# Load PDF document from Google Cloud Storage
-loader = GCSFileLoader(project_name="eth-global", bucket="contract-store-eth-global", blob="music_revenue_contract.pdf")
-pages = loader.load()
+# Flask app for handling queries
+app = Flask(__name__)
 
-# Split into chunks
-text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1000,
-    chunk_overlap=200
-)
-docs = text_splitter.split_documents(pages)
+# Preload the document and vector store
+def initialize_agent():
+    # Load PDF document from Google Cloud Storage
+    loader = GCSFileLoader(project_name="eth-global", bucket="contract-store-eth-global", blob="music_revenue_contract.pdf")
+    pages = loader.load()
 
-# Set up embeddings
-embeddings = VertexAIEmbeddings(model_name="textembedding-gecko@latest")
+    # Split into chunks
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    docs = text_splitter.split_documents(pages)
 
-# Create vector store
-vectorstore = Chroma.from_documents(docs, embeddings)
+    # Set up embeddings and vector store
+    embeddings = VertexAIEmbeddings(model_name="textembedding-gecko@latest")
+    vectorstore = Chroma.from_documents(docs, embeddings)
 
-# Set up Vertex AI for LLM
+    return vectorstore
+
+# Initialize vector store and LLM
+vectorstore = initialize_agent()
 llm = VertexAI(
     model_name="gemini-pro",
     max_output_tokens=500,
@@ -36,16 +40,14 @@ llm = VertexAI(
     top_k=40
 )
 
-# Create prompt template
+# Create prompt template for RAG chain
 prompt_template = """Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
 
 {context}
 
 Question: {question}
 Answer:"""
-PROMPT = PromptTemplate(
-    template=prompt_template, input_variables=["context", "question"]
-)
+PROMPT = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
 
 # Create RAG chain
 qa_chain = RetrievalQA.from_chain_type(
@@ -56,6 +58,24 @@ qa_chain = RetrievalQA.from_chain_type(
     chain_type_kwargs={"prompt": PROMPT}
 )
 
-# Query the chain
-response = qa_chain("What is my contract split according to the contract?")
-print(response["result"])
+@app.route('/query', methods=['POST'])
+def handle_query():
+    """
+    Endpoint to handle incoming queries.
+    """
+    data = request.json
+    question = data.get('question', '')
+
+    if not question:
+        return jsonify({"error": "No question provided"}), 400
+
+    # Run RAG chain on the question
+    response = qa_chain(question)
+    
+    return jsonify({
+        "result": response["result"],
+        "source_documents": [doc.page_content for doc in response["source_documents"]]
+    })
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
