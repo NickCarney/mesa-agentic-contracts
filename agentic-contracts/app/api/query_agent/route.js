@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { Pinecone } from "@pinecone-database/pinecone";
 //import { give_prompt } from "@/utils/agentkitIntegration";
-import { fetchLawInsider } from "@/lib/fetchLawInsider";
-import { generatePrompt } from "@/lib/generatePrompt";
+// import { fetchLawInsider } from "@/lib/fetchLawInsider";
+// import { generatePrompt } from "@/lib/generatePrompt";
 
 
 export async function POST(req,res) {
@@ -16,7 +15,7 @@ export async function POST(req,res) {
         //4. generate prompt for agentkit based on context
         //5. call agentkit to generate new contract and post onchain
         //6.? docusign integration
-        return NextResponse.json({ ipfs: ipfsLink });
+        return res.status(200).json({ message: 'Contract processed successfully' });
     } catch (error) {
         console.error('Error processing contract:', error);
         return {
