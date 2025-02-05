@@ -1,4 +1,4 @@
-import { Pinecone } from "@pinecone-database/pinecone";
+//import { Pinecone } from "@pinecone-database/pinecone";
 //import { give_prompt } from "@/utils/agentkitIntegration";
 // import { fetchLawInsider } from "@/lib/fetchLawInsider";
 // import { generatePrompt } from "@/lib/generatePrompt";
