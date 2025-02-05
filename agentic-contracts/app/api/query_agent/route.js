@@ -18,6 +18,15 @@ export async function POST(req,res) {
         }
         const contractText = await ipfsResponse.text();
         console.log('Contract text:', contractText);
+
+        const supabase = createClient(
+          "https://ewvzsofyvxcctuxxqibo.supabase.co",
+          process.env.SUPABASE_ANON_KEY
+        );
+        await supabase
+        .from("agentic-eth-contracts")
+        .insert([{ jurisdiction: jurisdiction, ipfslink: ipfsLink, contracttext: contractText }]);
+
         //3. query pinecone for similar contracts (context)
         //4. generate prompt for agentkit based on context
         //5. call agentkit to generate new contract and post onchain
