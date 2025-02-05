@@ -10,6 +10,7 @@ export async function POST(req,res) {
         const ipfsLink = req.body.record.ipfs_link;
         const jurisdiction = req.body.record.jurisdiction;
         console.log('New contract inserted:',  ipfsLink, jurisdiction );
+        res.send({ message: 'Contract received', ipfsLink, jurisdiction });
         //2. parse contract from ipfs link
         //3. query pinecone for similar contracts (context)
         //4. generate prompt for agentkit based on context
