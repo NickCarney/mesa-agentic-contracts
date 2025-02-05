@@ -4,11 +4,11 @@
 // import { generatePrompt } from "@/lib/generatePrompt";
 
 
-export async function POST(req,res) {
+export async function POST(request) {
     try {
         //1. get data (ipfs link and jurisdiction) from supabase webhook
-        let ipfsLink = req.body.record.ipfs_link;
-        const jurisdiction = req.body.record.jurisdiction;
+        let ipfsLink = request.json().body.record.ipfs_link;
+        const jurisdiction = request.json().body.record.jurisdiction;
         console.log('New contract inserted:',  ipfsLink, jurisdiction );
         //2. parse contract from ipfs link
         ipfsLink = 'https://ipfs.io/ipfs/'+ipfsLink;
@@ -31,16 +31,17 @@ export async function POST(req,res) {
         //4. generate prompt for agentkit based on context
         //5. call agentkit to generate new contract and post onchain
         //6.? docusign integration
-        return res.status(200).json({ message: 'Contract processed successfully' });
+        return new Response(JSON.stringify({ message: 'Contract processed successfully' }), { status: 200 });
     } catch (error) {
-        console.error('Error processing contract:', error);
-        return {
-        statusCode: 500,
-        body: JSON.stringify({ error: error.message }),
-        };
+        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
 
 };
+
+export async function GET(request){
+  console.log(request)
+  return new Response(JSON.stringify({ message: 'Get processed' }), { status: 200 });
+}
 
 
 
