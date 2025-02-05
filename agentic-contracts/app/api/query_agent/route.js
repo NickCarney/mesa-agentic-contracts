@@ -1,4 +1,4 @@
-import {initPinecone} from './pineconeClient.js';
+import {initPinecone} from '../../../lib/pineconeClient';
 import OpenAI from "openai";
 //import { give_prompt } from "@/utils/agentkitIntegration";
 // import { fetchLawInsider } from "@/lib/fetchLawInsider";
