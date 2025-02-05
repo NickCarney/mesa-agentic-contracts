@@ -7,11 +7,17 @@
 export async function POST(req,res) {
     try {
         //1. get data (ipfs link and jurisdiction) from supabase webhook
-        const ipfsLink = req.body.record.ipfs_link;
+        let ipfsLink = req.body.record.ipfs_link;
         const jurisdiction = req.body.record.jurisdiction;
         console.log('New contract inserted:',  ipfsLink, jurisdiction );
-        res.send({ message: 'Contract received', ipfsLink, jurisdiction });
         //2. parse contract from ipfs link
+        ipfsLink = 'https://ipfs.io/ipfs/'+ipfsLink;
+        const ipfsResponse = await fetch(ipfsUrl);
+        if (!ipfsResponse.ok) {
+          throw new Error(`Failed to fetch IPFS content. Status: ${ipfsResponse.status}`);
+        }
+        const contractText = await ipfsResponse.text();
+        console.log('Contract text:', contractText);
         //3. query pinecone for similar contracts (context)
         //4. generate prompt for agentkit based on context
         //5. call agentkit to generate new contract and post onchain
