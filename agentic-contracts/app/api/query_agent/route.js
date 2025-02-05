@@ -1,11 +1,11 @@
-//import { Pinecone } from "@pinecone-database/pinecone";
+import {initPinecone} from './pineconeClient.js';
+import OpenAI from "openai";
 //import { give_prompt } from "@/utils/agentkitIntegration";
 // import { fetchLawInsider } from "@/lib/fetchLawInsider";
 // import { generatePrompt } from "@/lib/generatePrompt";
 
 
 export async function POST(request) {
-    try {
         //1. get data (ipfs link and jurisdiction) from supabase webhook
         let ipfsLink = request.json().body.record.ipfs_link;
         const jurisdiction = request.json().body.record.jurisdiction;
@@ -28,13 +28,32 @@ export async function POST(request) {
         .insert([{ jurisdiction: jurisdiction, ipfslink: ipfsLink, contracttext: contractText }]);
 
         //3. query pinecone for similar contracts (context)
+
+        //embed contract text
+        const openai = new OpenAI();
+        const client = await initPinecone();
+        const indexName = "mesa-docs-index";
+        const index = client.index(indexName);
+
+        const embedding = await openai.embeddings.create({
+          model: "text-embedding-3-small",
+          input: contractText,
+          encoding_format: "float",
+        });
+
+        const queryResponse = await index.query({
+          vector: embedding,
+          topK: 5,
+          includeMetadata: true,
+          namespace: 'mesa-docs-namespace', // this assumes you have indexed documents under a namespace named by jurisdiction
+        });
+
+        const contextMatches = queryResponse.matches || [];
+        console.log(`Found ${contextMatches.length} matching context documents in Pinecone.`);
         //4. generate prompt for agentkit based on context
         //5. call agentkit to generate new contract and post onchain
         //6.? docusign integration
         return new Response(JSON.stringify({ message: 'Contract processed successfully' }), { status: 200 });
-    } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
-    }
 
 };
 
