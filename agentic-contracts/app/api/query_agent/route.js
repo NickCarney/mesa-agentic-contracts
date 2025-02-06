@@ -12,7 +12,7 @@ export async function POST(req,res) {
         const payload = await req.json()
         const { ipfs_cid, jurisdiction } = payload.record;
         //1. get data (ipfs link and jurisdiction) from supabase webhook
-        console.log('New contract inserted:',  ipfsLink, jurisdiction );
+        console.log('New contract inserted:',  ipfs_cid, jurisdiction );
 
         //2. parse contract from ipfs link
         ipfsLink = 'https://ipfs.io/ipfs/'+ipfs_cid;
