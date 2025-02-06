@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import {initPinecone} from '../../../lib/pineconeClient';
-import OpenAI from "openai";
+//import OpenAI from "openai";
 import { generatePrompt } from "@/lib/generatePrompt";
 import { give_prompt } from "@/utils/agentkitIntegration";
 import { createClient } from "@supabase/supabase-js";
@@ -36,7 +36,7 @@ export async function POST(req,res) {
         //3. query pinecone for similar contracts (context)
 
         //embed contract text
-        const openai = new OpenAI();
+        //const openai = new OpenAI();
         const client = await initPinecone();
         const indexName = "mesa-docs-index";
         const index = client.index(indexName);
