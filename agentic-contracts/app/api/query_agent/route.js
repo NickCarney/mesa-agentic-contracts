@@ -17,7 +17,7 @@ export async function POST(req,res) {
 
         //2. parse contract from ipfs link
         const ipfsLink = 'https://ipfs.io/ipfs/'+ipfs_cid;
-        const ipfsResponse = await fetch(ipfsUrl);
+        const ipfsResponse = await fetch(ipfsLink);
         if (!ipfsResponse.ok) {
           throw new Error(`Failed to fetch IPFS content. Status: ${ipfsResponse.status}`);
         }
