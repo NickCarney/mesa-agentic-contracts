@@ -10,8 +10,8 @@ export async function POST(req,res) {
      try{
         console.log(req,res)
         //1. get data (ipfs link and jurisdiction) from supabase webhook
-        let {ipfsLink, jurisdiction} = await req.json()
-        //const jurisdiction = req.json().body.record.jurisdiction;
+        let ipfsLink = req.body.record.ipfsLink;
+        const jurisdiction = req.body.record.jurisdiction;
         console.log('New contract inserted:',  ipfsLink, jurisdiction );
 
         //2. parse contract from ipfs link
