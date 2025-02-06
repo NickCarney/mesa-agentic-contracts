@@ -49,7 +49,7 @@ export async function POST(req,res) {
 
         const queryResponse = await index.query({
           vector: embedding,
-          topK: 5,
+          topK: 2,
           includeMetadata: true,
           namespace: 'mesa-docs-namespace',
         });
@@ -63,7 +63,7 @@ export async function POST(req,res) {
         .join("\n");
 
         //4. generate prompt for agentkit based on context
-        const userQuery = `generate a new translated contract in the official language of this jurisdiction: ${jurisdiction}. Once you have the contract. Generate a new wallet, add enough funds from faucet so that we can mint and deploy the contract as an NFT. Then mint the contract and deploy it. Afterwards, display the wallet details along with the NFT details.`;
+        const userQuery = `generate a new translated contract in the official language of this jurisdiction: ${jurisdiction}. Once you have the contract, generate a new wallet, add funds from faucet to mint and deploy the contract as an NFT. Then mint the contract and deploy it. Afterwards, display the wallet details along with the NFT details.`;
         const prompt = generatePrompt(userQuery, contextDocs, contextDocs)//using context docs twice until we gain law insider access.
 
         //5. call agentkit to generate new contract and post onchain
