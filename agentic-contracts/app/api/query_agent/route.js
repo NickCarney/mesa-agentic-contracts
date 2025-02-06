@@ -9,13 +9,13 @@ import OpenAI from "openai";
 export async function POST(req,res) {
      try{
         console.log(req,res)
+        const payload = await req.json()
+        const { ipfs_cid, jurisdiction } = payload.record;
         //1. get data (ipfs link and jurisdiction) from supabase webhook
-        let ipfsLink = req.body.record.ipfsLink;
-        const jurisdiction = req.body.record.jurisdiction;
         console.log('New contract inserted:',  ipfsLink, jurisdiction );
 
         //2. parse contract from ipfs link
-        ipfsLink = 'https://ipfs.io/ipfs/'+ipfsLink;
+        ipfsLink = 'https://ipfs.io/ipfs/'+ipfs_cid;
         const ipfsResponse = await fetch(ipfsUrl);
         if (!ipfsResponse.ok) {
           throw new Error(`Failed to fetch IPFS content. Status: ${ipfsResponse.status}`);
