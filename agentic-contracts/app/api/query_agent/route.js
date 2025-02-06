@@ -47,7 +47,7 @@ export async function POST(req,res) {
           encoding_format: "float",
         });
 
-        const queryResponse = await index.namespace('mesa-docs-namespace')({
+        const queryResponse = await index.namespace('mesa-docs-namespace').query({
           vector: embedding,
           topK: 2,
           includeMetadata: true,
