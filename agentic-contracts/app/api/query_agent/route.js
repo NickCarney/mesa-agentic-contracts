@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import {initPinecone} from '../../../lib/pineconeClient';
 import OpenAI from "openai";
-//import { give_prompt } from "@/utils/agentkitIntegration";
+import { generatePrompt } from "@/lib/generatePrompt";
+import { give_prompt } from "@/utils/agentkitIntegration";
 // import { fetchLawInsider } from "@/lib/fetchLawInsider";
-// import { generatePrompt } from "@/lib/generatePrompt";
+
 
 
 export async function POST(req,res) {
@@ -15,7 +16,7 @@ export async function POST(req,res) {
         console.log('New contract inserted:',  ipfs_cid, jurisdiction );
 
         //2. parse contract from ipfs link
-        ipfsLink = 'https://ipfs.io/ipfs/'+ipfs_cid;
+        const ipfsLink = 'https://ipfs.io/ipfs/'+ipfs_cid;
         const ipfsResponse = await fetch(ipfsUrl);
         if (!ipfsResponse.ok) {
           throw new Error(`Failed to fetch IPFS content. Status: ${ipfsResponse.status}`);
@@ -49,13 +50,24 @@ export async function POST(req,res) {
           vector: embedding,
           topK: 5,
           includeMetadata: true,
-          namespace: 'mesa-docs-namespace', // this assumes you have indexed documents under a namespace named by jurisdiction
+          namespace: 'mesa-docs-namespace',
         });
 
         const contextMatches = queryResponse.matches || [];
         console.log(`Found ${contextMatches.length} matching context documents in Pinecone.`);
+
+        const contextDocs = contextMatches
+        .map(match => match.metadata?.text)
+        .filter(Boolean)
+        .join("\n");
+
         //4. generate prompt for agentkit based on context
+        const userQuery = `generate a contract based on the template that is in the primary language of this jurisdiction: ${jurisdiction}. Once you have the contract. Generate a new wallet, add enough funds from faucet so that we can mint and deploy the contract as an NFT. Then mint the contract and deploy it. Afterwards, display the wallet details along with the NFT details.`;
+        const prompt = generatePrompt(userQuery, contextDocs, contextDocs)//using context docs twice until we gain law insider access.
+
         //5. call agentkit to generate new contract and post onchain
+        give_prompt(prompt);
+
         //6.? docusign integration
         return NextResponse.json(ipfsLink)
       }catch(err){
