@@ -3,6 +3,7 @@ import {initPinecone} from '../../../lib/pineconeClient';
 import OpenAI from "openai";
 import { generatePrompt } from "@/lib/generatePrompt";
 import { give_prompt } from "@/utils/agentkitIntegration";
+const { createClient } = require("@supabase/supabase-js");
 // import { fetchLawInsider } from "@/lib/fetchLawInsider";
 
 
