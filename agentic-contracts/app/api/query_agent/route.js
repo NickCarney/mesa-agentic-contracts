@@ -41,14 +41,14 @@ export async function POST(req,res) {
         const indexName = "mesa-docs-index";
         const index = client.index(indexName);
 
-        const embedding = await openai.embeddings.create({
-          model: "text-embedding-3-small",
-          input: contractText,
-          encoding_format: "float",
-        });
+        // const embedding = await openai.embeddings.create({
+        //   model: "text-embedding-3-small",
+        //   input: contractText,
+        //   encoding_format: "float",
+        // });
 
         const queryResponse = await index.namespace('mesa-docs-namespace').query({
-          vector: embedding,
+          id: 'f832923ad3cb060bc87ad85e68b8a1c3',
           topK: 2,
           includeMetadata: true,
           includeValues: true,
