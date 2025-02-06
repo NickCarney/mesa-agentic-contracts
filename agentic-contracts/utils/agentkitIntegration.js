@@ -119,7 +119,8 @@ async function initializeAgent() {
     // Save wallet data
     const exportedWallet = await agentkit.exportWallet();
     fs.writeFileSync(WALLET_DATA_FILE, exportedWallet);
-
+    
+    console.log("succesfuly initialized agent")
     return { agent, config: agentConfig };
   } catch (error) {
     console.error("Failed to initialize agent:", error);
@@ -283,7 +284,7 @@ export async function give_prompt(prompt){
   try {
     const { agent, config } = await initializeAgent();
 
-    await runAutonomousMode(agent, config, prompt);
+    runAutonomousMode(agent, config, prompt);
   } catch (error) {
     if (error instanceof Error) {
       console.error("Error:", error.message);
