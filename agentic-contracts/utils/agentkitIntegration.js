@@ -70,6 +70,7 @@ async function initializeAgent() {
       model: "gpt-4o-mini",
       apiKey: process.env.OPENAI_API_KEY,
     });
+    console.log("llm set up")
 
     let walletDataStr = null;
 
@@ -87,15 +88,18 @@ async function initializeAgent() {
         // Continue without wallet data
       }
     }
+    console.log("wallet set up")
 
     // Configure CDP Agentkit
     const config = {
       cdpWalletData: walletDataStr || undefined,
       networkId: process.env.NETWORK_ID || "base-sepolia",
     };
+    console.log("config set up")
 
     // Initialize CDP agentkit
     const agentkit = await CdpAgentkit.configureWithWallet(config);
+    console.log("agentkit with config set up")
 
     // Initialize CDP Agentkit Toolkit and get tools
     const cdpToolkit = new CdpToolkit(agentkit);
@@ -106,6 +110,7 @@ async function initializeAgent() {
     const agentConfig = {
       configurable: { thread_id: "CDP Agentkit Chatbot Example!" },
     };
+    console.log("memory set up")
 
     // Create React Agent using the LLM and CDP Agentkit tools
     const agent = createReactAgent({
@@ -115,6 +120,7 @@ async function initializeAgent() {
       messageModifier:
         "You are a helpful agent that can interact onchain using the Coinbase Developer Platform Agentkit. You are empowered to interact onchain using your tools. If you ever need funds, you can request them from the faucet if you are on network ID `base-sepolia`. If not, you can provide your wallet details and request funds from the user. If someone asks you to do something you can't do with your currently available tools, you must say so, and encourage them to implement it themselves using the CDP SDK + Agentkit, recommend they go to docs.cdp.coinbase.com for more informaton. Be concise and helpful with your responses. Refrain from restating your tools' descriptions unless it is explicitly requested.",
     });
+    console.log("react agent set up")
 
     // Save wallet data
     const exportedWallet = await agentkit.exportWallet();

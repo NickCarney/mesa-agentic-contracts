@@ -58,7 +58,7 @@ export async function POST(req,res) {
         console.log(`Found ${contextMatches.length} matching context documents in Pinecone.`);
 
         const contextDocs = contextMatches
-        .map(match => match.metadata?.text.slice(0, 2000))
+        .map(match => match.metadata?.text.slice(0, 8000))
         .filter(Boolean)
         .join("\n");
 
