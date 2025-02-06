@@ -10,8 +10,8 @@ export async function POST(req,res) {
      try{
         console.log(req,res)
         //1. get data (ipfs link and jurisdiction) from supabase webhook
-        let ipfsLink = req.json().body.record.ipfs_link;
-        const jurisdiction = req.json().body.record.jurisdiction;
+        let {ipfsLink, jurisdiction} = await req.json()
+        //const jurisdiction = req.json().body.record.jurisdiction;
         console.log('New contract inserted:',  ipfsLink, jurisdiction );
 
         //2. parse contract from ipfs link
@@ -60,7 +60,7 @@ export async function POST(req,res) {
         return NextResponse.json(ipfsLink)
       }catch(err){
         console.log("Error:",err.message);
-        const response = {error:err.message, returnedStatus:500}
+        const response = {error:err.message, req, returnedStatus:500}
         return NextResponse.json(response, {status:500})
       }
 };
