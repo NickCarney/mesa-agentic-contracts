@@ -77,11 +77,6 @@ async function initializeAgent() {
 
     let walletDataStr = undefined;
 
-    //so a new wallet is created each time
-    // if (fs.existsSync(WALLET_DATA_FILE)) {
-    //   fs.unlinkSync(WALLET_DATA_FILE);
-    // }
-
     // Read existing wallet data if available
     if (fs.existsSync(WALLET_DATA_FILE)) {
       try {
@@ -101,13 +96,20 @@ async function initializeAgent() {
     console.log("config set up", config);
 
     // Initialize CDP agentkit
-    const agentkit = await CdpAgentkit.configureWithWallet(config);
-    console.log("agentkit with config set up",agentkit);
+    let agentkit;
+    try {
+      agentkit = await CdpAgentkit.configureWithWallet(config);
+      console.log("agentkit with config set up", agentkit);
+    } catch (error) {
+      console.error("Error initializing agentkit:", error);
+      throw error;
+    }
 
     // Initialize CDP Agentkit Toolkit and get tools
     const cdpToolkit = new CdpToolkit(agentkit);
+    console.log("cdptools set up", cdpToolkit);
     const tools = cdpToolkit.getTools();
-    console.log("tools set up",cdpToolkit,tools)
+    console.log("tools set up", tools);
 
     // Store buffered conversation history in memory
     const memory = new MemorySaver();
