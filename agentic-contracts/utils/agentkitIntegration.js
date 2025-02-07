@@ -98,6 +98,7 @@ async function initializeAgent() {
     // Initialize CDP agentkit
     let agentkit;
     try {
+      console.log("trying");
       agentkit = await CdpAgentkit.configureWithWallet(config);
       console.log("agentkit with config set up", agentkit);
     } catch (error) {
@@ -114,7 +115,7 @@ async function initializeAgent() {
     // Store buffered conversation history in memory
     const memory = new MemorySaver();
     const agentConfig = {
-      configurable: { thread_id: "CDP Agentkit Chatbot Example!" },
+      configurable: { thread_id: "CDP Agentkit Chatbot Example for mesa!" },
     };
     console.log("memory set up", memory);
 
