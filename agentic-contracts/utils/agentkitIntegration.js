@@ -172,7 +172,7 @@ async function runAutonomousMode(agent, config, prompt, interval = 10) {
       );
       console.log("stream", stream)
 
-      for (const chunk of stream) {
+      for await (const chunk of stream) {
         if ("agent" in chunk) {
           console.log(chunk.agent.messages[0].content);
           if (chunk.agent.messages[0].content != "") {
