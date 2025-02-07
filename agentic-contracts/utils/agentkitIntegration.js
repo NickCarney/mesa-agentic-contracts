@@ -166,7 +166,7 @@ async function runAutonomousMode(agent, config, prompt, interval = 10) {
     //     "Once this NFT is deployed, please mint it and return the transactional hash." +
     //     "After these steps, you are done, thank you!";
 
-      const stream = agent.stream(
+      const stream = await agent.stream(
         { messages: [new HumanMessage(thought)] },
         config
       );
