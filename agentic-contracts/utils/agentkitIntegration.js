@@ -93,7 +93,7 @@ async function initializeAgent() {
 
     // Configure CDP Agentkit
     const config = {
-      cdpWalletData: walletDataStr || undefined,
+      cdpWalletData: undefined,
       networkId: process.env.NETWORK_ID || "base-sepolia",
     };
     console.log("config set up", config);
