@@ -73,7 +73,7 @@ async function initializeAgent() {
     });
     console.log("llm set up", llm);
 
-    let walletDataStr = null;
+    let walletDataStr = undefined;
 
     //so a new wallet is created each time
     if (fs.existsSync(WALLET_DATA_FILE)) {
@@ -93,7 +93,7 @@ async function initializeAgent() {
 
     // Configure CDP Agentkit
     const config = {
-      cdpWalletData: undefined,
+      cdpWalletData: walletDataStr || undefined,
       networkId: process.env.NETWORK_ID || "base-sepolia",
     };
     console.log("config set up", config);
