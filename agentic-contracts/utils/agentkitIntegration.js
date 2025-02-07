@@ -130,8 +130,8 @@ async function initializeAgent() {
     console.log("react agent set up",agent);
 
     // Save wallet data
-    const exportedWallet = await agentkit.exportWallet();
-    fs.writeFileSync(WALLET_DATA_FILE, exportedWallet);
+    //const exportedWallet = await agentkit.exportWallet();
+    //fs.writeFileSync(WALLET_DATA_FILE, exportedWallet);
     
     console.log("succesfuly initialized agent");
     return { agent, config: agentConfig };
