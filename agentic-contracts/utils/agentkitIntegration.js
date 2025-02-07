@@ -152,6 +152,7 @@ async function runAutonomousMode(agent, config, prompt, interval = 10) {
   console.log("Starting autonomous mode...");
   const comments = [];
   while (true) {
+    console.log("in while")
     try {
       const thought = prompt
     //   const thought =
@@ -165,12 +166,13 @@ async function runAutonomousMode(agent, config, prompt, interval = 10) {
     //     "Once this NFT is deployed, please mint it and return the transactional hash." +
     //     "After these steps, you are done, thank you!";
 
-      const stream = await agent.stream(
+      const stream = agent.stream(
         { messages: [new HumanMessage(thought)] },
         config
       );
+      console.log("stream", stream)
 
-      for await (const chunk of stream) {
+      for (const chunk of stream) {
         if ("agent" in chunk) {
           console.log(chunk.agent.messages[0].content);
           if (chunk.agent.messages[0].content != "") {
@@ -185,7 +187,7 @@ async function runAutonomousMode(agent, config, prompt, interval = 10) {
         console.log("-------------------");
       }
 
-
+      console.log("comments",comments)
       const supabase = createClient(
         "https://ewvzsofyvxcctuxxqibo.supabase.co",
         process.env.SUPABASE_ANON_KEY
