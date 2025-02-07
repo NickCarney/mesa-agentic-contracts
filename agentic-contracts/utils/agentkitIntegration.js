@@ -78,9 +78,9 @@ async function initializeAgent() {
     let walletDataStr = undefined;
 
     //so a new wallet is created each time
-    if (fs.existsSync(WALLET_DATA_FILE)) {
-      fs.unlinkSync(WALLET_DATA_FILE);
-    }
+    // if (fs.existsSync(WALLET_DATA_FILE)) {
+    //   fs.unlinkSync(WALLET_DATA_FILE);
+    // }
 
     // Read existing wallet data if available
     if (fs.existsSync(WALLET_DATA_FILE)) {
