@@ -12,8 +12,8 @@
   "dependencies": {
     "@coinbase/cdp-agentkit-core": "^0.0.14",
     "@coinbase/cdp-langchain": "^0.0.15",
-    "@langchain/langgraph": "^0.2.45",
     "@langchain/core": "^0.3.30",
+    "@langchain/langgraph": "^0.2.45",
     "@langchain/openai": "^0.4.2",
     "@pinecone-database/pinecone": "^4.1.0",
     "@supabase/supabase-js": "^2.48.1",
