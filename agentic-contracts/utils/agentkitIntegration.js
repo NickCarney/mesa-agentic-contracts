@@ -115,7 +115,7 @@ async function initializeAgent() {
     // Store buffered conversation history in memory
     const memory = new MemorySaver();
     const agentConfig = {
-      configurable: { thread_id: "CDP Agentkit Chatbot Example for mesa!" },
+      configurable: { thread_id: "CDP Agentkit Chatbot Example!" },
     };
     console.log("memory set up", memory);
 
@@ -165,11 +165,15 @@ async function runAutonomousMode(agent, config, prompt, interval = 10) {
     //     "Give the wallet a random basename with under 7 characters. Then deploy a NFT from an ipfs PDF url. " +
     //     "Once this NFT is deployed, please mint it and return the transactional hash." +
     //     "After these steps, you are done, thank you!";
-
-      const stream = await agent.stream(
+      const stream = await Promise.race([
+      agent.stream(
         { messages: [new HumanMessage(thought)] },
         config
-      );
+      ),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Stream timeout")), 30000) // 30 seconds timeout
+      ),
+    ]);
       console.log("stream", stream)
 
       for await (const chunk of stream) {
