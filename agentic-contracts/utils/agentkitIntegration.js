@@ -7,6 +7,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import dotenv from "dotenv";
 import fs from "fs";
 import readline from "readline";
+import path from 'path';
 
 import { createClient } from "@supabase/supabase-js";
 
@@ -56,7 +57,8 @@ function validateEnvironment() {
 validateEnvironment();
 
 // Configure a file to persist the agent's CDP MPC Wallet Data
-const WALLET_DATA_FILE = "wallet_data.txt";
+//const WALLET_DATA_FILE = "wallet_data.txt";
+let WALLET_DATA_FILE = path.join(process.cwd(), 'wallet_data.txt');
 
 /**
  * Initialize the agent with CDP Agentkit
