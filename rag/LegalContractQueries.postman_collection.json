@@ -1,0 +1,71 @@
+{
+	"info": {
+		"_postman_id": "cf472836-0ea8-4452-879b-b8e46a574d71",
+		"name": "LegalContractQueries",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41798415"
+	},
+	"item": [
+		{
+			"name": "Query Agent - local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"question\": \"What is my contract split based on the current contract?\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query Agent - dev",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"question\": \"What is my contract split based on the current contract?\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://eth-global-service-3968955446.us-central1.run.app/query",
+					"protocol": "https",
+					"host": [
+						"eth-global-service-3968955446",
+						"us-central1",
+						"run",
+						"app"
+					],
+					"path": [
+						"query"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
