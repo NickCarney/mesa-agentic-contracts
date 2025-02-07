@@ -7,6 +7,8 @@ from langchain_google_vertexai import VertexAI
 from langchain_google_vertexai import VertexAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.prompts import PromptTemplate
+from google.cloud import storage
+
 
 # Initialize Google Cloud
 aiplatform.init(project='eth-global', location='us-central1')
@@ -14,21 +16,36 @@ aiplatform.init(project='eth-global', location='us-central1')
 # Flask app for handling queries
 app = Flask(__name__)
 
-# Preload the document and vector store
-def initialize_agent():
-    # Load PDF document from Google Cloud Storage
-    loader = GCSFileLoader(project_name="eth-global", bucket="contract-store-eth-global", blob="music_revenue_contract.pdf")
-    pages = loader.load()
 
-    # Split into chunks
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-    docs = text_splitter.split_documents(pages)
+def initialize_agent():
+    # Initialize Google Cloud Storage client
+    storage_client = storage.Client(project="eth-global")
+    
+    # Get the bucket
+    bucket = storage_client.get_bucket("contract-store-eth-global")
+    
+    all_docs = []
+    
+    # List all blobs (files) in the bucket
+    blobs = bucket.list_blobs()
+    
+    for blob in blobs:
+        # Load document from Google Cloud Storage
+        loader = GCSFileLoader(project_name="eth-global", bucket="contract-store-eth-global", blob=blob.name)
+        pages = loader.load()
+        
+        # Split into chunks
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+        docs = text_splitter.split_documents(pages)
+        
+        all_docs.extend(docs)
 
     # Set up embeddings and vector store
     embeddings = VertexAIEmbeddings(model_name="textembedding-gecko@latest")
-    vectorstore = Chroma.from_documents(docs, embeddings)
+    vectorstore = Chroma.from_documents(all_docs, embeddings)
 
     return vectorstore
+
 
 # Initialize vector store and LLM
 vectorstore = initialize_agent()
@@ -78,4 +95,4 @@ def handle_query():
     })
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)
