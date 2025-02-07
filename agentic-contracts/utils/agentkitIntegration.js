@@ -1,12 +1,12 @@
-const { CdpAgentkit } = require("@coinbase/cdp-agentkit-core");
-const { CdpToolkit } = require("@coinbase/cdp-langchain");
-const { HumanMessage } = require("@langchain/core/messages");
-const { MemorySaver } = require("@langchain/langgraph");
-const { createReactAgent } = require("@langchain/langgraph/prebuilt");
-const { ChatOpenAI } = require("@langchain/openai");
-const dotenv = require("dotenv");
-const fs = require("fs");
-const readline = require("readline");
+import { CdpAgentkit } from "@coinbase/cdp-agentkit-core";
+import { CdpToolkit } from "@coinbase/cdp-langchain";
+import { HumanMessage } from "@langchain/core/messages";
+import { MemorySaver } from"@langchain/langgraph";
+import { createReactAgent } from "@langchain/langgraph/prebuilt";
+import { ChatOpenAI } from "@langchain/openai";
+import dotenv from "dotenv";
+import fs from "fs";
+import readline from "readline";
 
 
 dotenv.config();
@@ -318,7 +318,7 @@ async function main() {
   }
 }
 
-if (require.main === module) {
+if (process.argv[1] === import.meta.filename) {
   console.log("Starting Agent...");
   main().catch((error) => {
     console.error("Fatal error:", error);
@@ -326,4 +326,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { initializeAgent, runAutonomousMode, give_prompt };
+//module.exports = { initializeAgent, runAutonomousMode, give_prompt };
