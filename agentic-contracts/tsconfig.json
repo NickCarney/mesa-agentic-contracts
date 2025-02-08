@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/pineconeClient.js", "app/test/page.jsx", "app/api/query_agent/route.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/pineconeClient.js", "app/test/page.jsx", "app/api/query_agent/route.js", "app/[userID]/page.jsx"],
   "exclude": ["node_modules"]
 }
