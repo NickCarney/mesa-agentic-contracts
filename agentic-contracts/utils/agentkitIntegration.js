@@ -99,7 +99,7 @@ async function initializeAgent() {
     let agentkit;
     try {
       console.log("trying");
-      agentkit = CdpAgentkit.configureWithWallet(config);
+      agentkit = await CdpAgentkit.configureWithWallet(config);
       console.log("agentkit with config set up", agentkit);
     } catch (error) {
       console.error("Error initializing agentkit:", error);
