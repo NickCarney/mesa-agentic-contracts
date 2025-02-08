@@ -128,10 +128,6 @@ async function initializeAgent() {
         "You are a helpful agent that can interact onchain using the Coinbase Developer Platform Agentkit. You are empowered to interact onchain using your tools. If you ever need funds, you can request them from the faucet if you are on network ID `base-sepolia`. If not, you can provide your wallet details and request funds from the user. Be concise and helpful with your responses. Refrain from restating your tools' descriptions unless it is explicitly requested.",
     });
     console.log("react agent set up",agent);
-
-    // Save wallet data
-    //const exportedWallet = await agentkit.exportWallet();
-    //fs.writeFileSync(WALLET_DATA_FILE, exportedWallet);
     
     console.log("succesfuly initialized agent");
     return { agent, config: agentConfig };
@@ -152,28 +148,12 @@ async function runAutonomousMode(agent, config, prompt, interval = 10) {
   console.log("Starting autonomous mode...");
   const comments = [];
   while (true) {
-    console.log("in while")
     try {
-      const thought = prompt
-    //   const thought =
-    //     "Please display the wallet details. Add funds from faucet until you can get a basename and NFT deployed." +
-    //     "The Name of the NFT collection should be 'MesaWallet' with 3 random characters appended afterwards." +
-    //     "The Symbol of the NFT collection should be 'MW' with the same 3 random characters appended afterwards." +
-    //     "The Base URI is " +
-    //     ipfs_url +
-    //     "The image for the NFT is https://mesa.mypinata.cloud/ipfs/bafkreifesm2kzzlgzamioix4i5yt3mwvpxqh5vaq6k4b5lzmbk4yuaaiwu" +
-    //     "Give the wallet a random basename with under 7 characters. Then deploy a NFT from an ipfs PDF url. " +
-    //     "Once this NFT is deployed, please mint it and return the transactional hash." +
-    //     "After these steps, you are done, thank you!";
-      const stream = await Promise.race([
-      agent.stream(
+      const thought = prompt;
+      const stream = await agent.stream(
         { messages: [new HumanMessage(thought)] },
         config
-      ),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Stream timeout")), 30000) // 30 seconds timeout
-      ),
-    ]);
+      );
       console.log("stream", stream)
 
       for await (const chunk of stream) {
@@ -323,6 +303,7 @@ async function main() {
   try {
     const { agent, config } = await initializeAgent();
     const mode = await chooseMode();
+    const prompt = "give wallet details";
 
     if (mode === "chat") {
       await runChatMode(agent, config);
