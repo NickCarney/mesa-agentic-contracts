@@ -73,7 +73,6 @@ async function initializeAgent() {
       model: "gpt-4o-mini",
       apiKey: process.env.OPENAI_API_KEY,
     });
-    console.log("llm set up", llm);
 
     let walletDataStr = undefined;
 
