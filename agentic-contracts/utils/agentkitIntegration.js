@@ -97,7 +97,6 @@ async function initializeAgent() {
     // Initialize CDP agentkit
     let agentkit;
     try {
-      console.log("trying");
       agentkit = await CdpAgentkit.configureWithWallet(config);
       console.log("agentkit with config set up", agentkit);
     } catch (error) {
@@ -109,7 +108,7 @@ async function initializeAgent() {
     const cdpToolkit = new CdpToolkit(agentkit);
     console.log("cdptools set up", cdpToolkit);
     const tools = cdpToolkit.getTools();
-    console.log("tools set up", tools);
+    //console.log("tools set up", tools);
 
     // Store buffered conversation history in memory
     const memory = new MemorySaver();
@@ -126,7 +125,7 @@ async function initializeAgent() {
       messageModifier:
         "You are a helpful agent that can interact onchain using the Coinbase Developer Platform Agentkit. You are empowered to interact onchain using your tools. If you ever need funds, you can request them from the faucet if you are on network ID `base-sepolia`. If not, you can provide your wallet details and request funds from the user. Be concise and helpful with your responses. Refrain from restating your tools' descriptions unless it is explicitly requested.",
     });
-    console.log("react agent set up",agent);
+    //console.log("react agent set up",agent);
     
     console.log("succesfuly initialized agent");
     return { agent, config: agentConfig };
@@ -301,7 +300,8 @@ export async function give_prompt(prompt){
 async function main() {
   try {
     const { agent, config } = await initializeAgent();
-    const mode = await chooseMode();
+    //const mode = await chooseMode();
+    const mode="auto";
     const prompt = "give wallet details";
 
     if (mode === "chat") {

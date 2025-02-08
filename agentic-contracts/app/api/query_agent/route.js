@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import {initPinecone} from '../../../lib/pineconeClient';
 //import OpenAI from "openai";
 import { generatePrompt } from "@/lib/generatePrompt";
-import { give_prompt } from "@/utils/agentkitIntegration";
+import { main } from "@/utils/agentkitIntegration";
 import { createClient } from "@supabase/supabase-js";
 // import { fetchLawInsider } from "@/lib/fetchLawInsider";
 
@@ -10,7 +10,7 @@ import { createClient } from "@supabase/supabase-js";
 
 export async function POST(req,res) {
      try{
-        console.log(req,res)
+        console.log(res)
         const payload = await req.json()
         const { ipfs_cid, jurisdiction } = payload.record;
         //1. get data (ipfs link and jurisdiction) from supabase webhook
@@ -67,7 +67,8 @@ export async function POST(req,res) {
         const prompt = generatePrompt(userQuery, contextDocs, contextDocs)//using context docs twice until we gain law insider access.
 
         //5. call agentkit to generate new contract and post onchain
-        give_prompt(prompt);
+        //give_prompt(prompt);
+        main()
 
         //6.? docusign integration
         return NextResponse.json(ipfsLink)
