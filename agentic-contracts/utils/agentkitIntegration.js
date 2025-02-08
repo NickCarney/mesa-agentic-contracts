@@ -297,7 +297,7 @@ export async function give_prompt(prompt){
 }
 
 
-async function main() {
+export async function main() {
   try {
     const { agent, config } = await initializeAgent();
     //const mode = await chooseMode();
