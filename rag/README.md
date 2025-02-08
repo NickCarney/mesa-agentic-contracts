@@ -1,4 +1,5 @@
 
+  
 # Retrieval-Augmented Generation (RAG) Agent
 
 This Python application is a **Retrieval-Augmented Generation (RAG) agent** that processes documents stored in a Google Cloud Storage (GCS) bucket, vectorizes them, and allows users to query the documents using a deployed API. The agent uses Google Vertex AI for embeddings and language model inference.
@@ -55,12 +56,11 @@ This Python application is a **Retrieval-Augmented Generation (RAG) agent** that
 
 1. Clone the repository:
 
-    git clone <repository-url>  
-	cd <repository-directory>
+    git clone https://github.com/NickCarney/mesa-agentic-contracts.git
+	cd mesa-agentic-contracts
 
 2. Install dependencies:
 pip install -r requirements.txt
-text
 
 3. Set up your Google Cloud credentials:
 Ensure you have authenticated with Google Cloud CLI and set up your credentials:
@@ -71,14 +71,14 @@ Set up your Google Cloud project ID, region, and GCS bucket name in the script o
 
 5. Run the application locally:
 python rag.py
-text
+
 
 6. Test the API locally:
 Use `curl` or Postman to send queries to the local server:
 curl -X POST http://127.0.0.1:8080/query
 -H "Content-Type: application/json"
 -d '{"question": "What is my contract split according to the contract?"}'
-text
+
 
 ---
 
@@ -87,21 +87,13 @@ text
 ### Steps to Deploy
 
 1. Build the Docker image:
-docker build -t gcr.io/[PROJECT-ID]/rag-agent .
-text
+docker push gcr.io/eth-global/rag-image
 
-2. Push the Docker image to Google Container Registry (GCR):
-docker push gcr.io/[PROJECT-ID]/rag-agent
-text
+2. Push the Docker image to Google Container Registry (GCR). (Include the period in the command):
+docker buildx build -t gcr.io/eth-global/rag-image .
 
 3. Deploy the container on Google Cloud Run:
-gcloud run deploy rag-agent-service
---image gcr.io/[PROJECT-ID]/rag-agent
---platform managed
---region us-central1
---allow-unauthenticated
---memory 1Gi
-text
+gcloud run deploy eth-global-service --image gcr.io/eth-global/rag-image --platform managed --region us-central1 --memory 1Gi
 
 4. Note the service URL provided after deployment.
 
@@ -110,8 +102,6 @@ Use `curl` or Postman to send queries to your service URL:
 curl -X POST https://[SERVICE-URL]/query
 -H "Content-Type: application/json"
 -d '{"question": "What is my contract split according to the contract?"}'
-text
-
 ---
 
 ## Script Overview
@@ -151,4 +141,3 @@ text
 - Monitor logs in Google Cloud Console for debugging and performance insights.
 -Current dev endpoint for agent is: https://eth-global-service-3968955446.us-central1.run.app/query
 -Example request body: {"question": "I'm an artist in the Colombian jurisdiction, can you send me a contract that 	is appropriate for my needs?"}
-
