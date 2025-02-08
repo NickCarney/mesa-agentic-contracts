@@ -16,7 +16,7 @@ export default async function ContractPage({ params }) {
     .single();
 
   if (error || !contract) {
-    return <div>No contract found for ID: {id}</div>;
+    return <div className='text-center'><p>No contract found for ID: {id}</p></div>;
   }
 
   return (
