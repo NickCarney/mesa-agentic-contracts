@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 const sendEmail = async (emails: string, id:string) => {
   try {
-    const response = await fetch(`/api/send`, {
+    const response = await fetch(`https://mesa-agentic-contracts.vercel.app/api/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
