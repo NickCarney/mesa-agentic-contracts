@@ -40,6 +40,7 @@ export default async function ContractPage({ params }) {
   return (
     <div className="p-4 text-center">
       <h1 className="text-xl font-bold">Contract for ID: {id}</h1>
+      <p>original ipfs Link: {contract.ipfs_link}</p>
       <textarea
         className="w-full h-64 p-2 border rounded-md"
         value={contractText}
