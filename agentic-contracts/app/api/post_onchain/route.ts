@@ -27,7 +27,8 @@ const sendEmail = async (emails: string, id:string) => {
 
 export async function POST(req: Request) {
   try {
-    const { id, ipfs_link, emails } = await req.json();
+    const payload = await req.json();
+    const { id, ipfs_link, emails } = payload.record;
     console.log(id,ipfs_link,emails)
 
     if (!id || !ipfs_link || !emails) {
