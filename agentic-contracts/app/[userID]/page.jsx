@@ -16,9 +16,8 @@ export default async function ContractPage({ params }) {
   .eq('id', Number(id))
   .single();
 
-
+  console.log(contract.ipfs_link)
   const fetchIPFSContent = async () => {
-    if (!contract.ipfs_link) return;
     try {
       const response = await fetch(contract.ipfs_link);
       if (!response.ok) {
