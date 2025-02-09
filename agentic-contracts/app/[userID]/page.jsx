@@ -44,9 +44,7 @@ export default async function ContractPage({ params }) {
       <textarea
         className="w-full h-64 p-2 border rounded-md"
         value={contractText}
-        onChange={() => document.getElementById('ifChange').innerText = "You have made changes to the contract"}
       />
-      <div id="ifChange"></div>
     </div>
   );
 }
