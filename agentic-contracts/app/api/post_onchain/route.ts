@@ -1,7 +1,4 @@
 import { NextResponse } from 'next/server';
-//import { createClient } from '@supabase/supabase-js';
-
-//const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!);
 
 const sendEmail = async (emails: string, id:string) => {
   try {
@@ -28,19 +25,15 @@ const sendEmail = async (emails: string, id:string) => {
   }
 };
 
-export async function POST(req: Request) {
+export async function POST(req: Request, res: Response) {
   try {
     const { id, ipfs_link, emails } = await req.json();
+    console.log(id,ipfs_link,emails, res)
 
     if (!id || !ipfs_link || !emails) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
     sendEmail(emails,id);
-    // const { data, error } = await supabase
-    //   .from('translated-contracts')
-    //   .insert([{ id, ipfs_link, emails }]);
-
-    // if (error) throw error;
 
     return NextResponse.json({ success: true, id });
   } catch (err) {
