@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import * as pdf from 'pdf-parse';
-import { give_prompt } from '../../utils/agentkitIntegration'
+//import { give_prompt } from '../../utils/agentkitIntegration'
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
@@ -50,10 +50,10 @@ export default async function ContractPage({ params }) {
     return <div className='text-center'><p>No contract found for ID: {id}</p></div>;
   }
 
-  const postOnchain = () => {
-    const prompt = 'add funds from faucet until you can mint and deploy. Then mint and deploy a pdf stored on IPFS at this link: (https://ipfs.io/ipfs/'+cid+'). Once this is deployed that is all, thank you.'
-    give_prompt(prompt)
-  }
+  // const postOnchain = () => {
+  //   const prompt = 'add funds from faucet until you can mint and deploy. Then mint and deploy a pdf stored on IPFS at this link: (https://ipfs.io/ipfs/'+cid+'). Once this is deployed that is all, thank you.'
+  //   give_prompt(prompt)
+  // }
 
   return (
     <div className="p-4 text-center">
@@ -62,9 +62,9 @@ export default async function ContractPage({ params }) {
       <br/>
       <h3>Edit your contract if necessary</h3>
       <textarea id="contract" defaultValue={text} rows="20" cols="80"></textarea>
-      <button onClick={postOnchain}>
+      {/* <button onClick={postOnchain}>
         Post Onchain
-      </button>
+      </button> */}
 
     </div>
   );
