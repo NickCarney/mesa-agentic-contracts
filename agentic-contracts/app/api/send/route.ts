@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       from: "Mesa <contracts@mesawallet.io>",
       to: emails,
       subject: "Translated Contract",
-      react: await EmailTemplate( id ),
+      react: await EmailTemplate( {id} ),
     });
 
     if (error) {
